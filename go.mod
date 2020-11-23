@@ -1,3 +1,3 @@
-module github.com/tierklinik-dobersberg/log
+module github.com/tierklinik-dobersberg/logger
 
 go 1.14
