@@ -75,6 +75,11 @@ func DefaultLogger() Logger {
 	return defaultLogger
 }
 
+// New returns a new logger with the given adapter.
+func New(adapter Adapter) Logger {
+	return &logger{adapter: adapter}
+}
+
 type logger struct {
 	fields  Fields
 	adapter Adapter
