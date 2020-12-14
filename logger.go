@@ -75,6 +75,11 @@ func DefaultLogger() Logger {
 	return defaultLogger
 }
 
+// New returns a new logger with the given adapter.
+func New(adapter Adapter) Logger {
+	return &logger{adapter: adapter}
+}
+
 type logger struct {
 	fields  Fields
 	adapter Adapter
@@ -102,6 +107,16 @@ func (log *logger) WithFields(fields Fields) Logger {
 		fields:  newFields,
 		adapter: log.adapter,
 	}
+}
+
+// Infof logs an info message using the default logger.
+func Infof(msg string, args ...interface{}) {
+	DefaultLogger().Infof(msg, args...)
+}
+
+// Errorf logs an error message using the default logger.
+func Errorf(msg string, args ...interface{}) {
+	DefaultLogger().Errorf(msg, args...)
 }
 
 func mergeFields(a, b Fields) Fields {
