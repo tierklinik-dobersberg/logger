@@ -40,7 +40,7 @@ type StdlibAdapter struct{}
 
 func (*StdlibAdapter) Write(_ time.Time, severity Severity, msg string, fields Fields) {
 	for k, v := range fields {
-		msg += fmt.Sprintf(" %s=%q", k, v)
+		msg += fmt.Sprintf(" %s=%v", k, v)
 	}
 
 	log.Println(msg)
