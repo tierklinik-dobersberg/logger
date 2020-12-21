@@ -109,16 +109,6 @@ func (log *logger) WithFields(fields Fields) Logger {
 	}
 }
 
-// Infof logs an info message using the default logger.
-func Infof(msg string, args ...interface{}) {
-	DefaultLogger().Infof(msg, args...)
-}
-
-// Errorf logs an error message using the default logger.
-func Errorf(msg string, args ...interface{}) {
-	DefaultLogger().Errorf(msg, args...)
-}
-
 func mergeFields(a, b Fields) Fields {
 	copy := make(Fields, len(a)+len(b))
 
