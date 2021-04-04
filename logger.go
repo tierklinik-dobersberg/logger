@@ -10,9 +10,16 @@ import (
 // Fields is a map of additional fields used for logging.
 type Fields map[string]interface{}
 
+type VLogger interface {
+	Log(msg string)
+	Logf(msg string, args ...interface{})
+}
+
 // Logger describes the general log interfaces exposed by this
 // package.
 type Logger interface {
+	// V returns a VLogger at severity.
+	V(Severity) VLogger
 	// Info logs a message with info level.
 	Info(msg string)
 	// Infof logs a format message.
@@ -83,6 +90,25 @@ func New(adapter Adapter) Logger {
 type logger struct {
 	fields  Fields
 	adapter Adapter
+}
+
+type vlogger struct {
+	severity Severity
+	logger   *logger
+}
+
+func (v *vlogger) Log(msg string) {
+	v.logger.adapter.Write(time.Now(), v.severity, msg, v.logger.fields)
+}
+func (v *vlogger) Logf(msg string, args ...interface{}) {
+	v.logger.adapter.Write(time.Now(), v.severity, fmt.Sprintf(msg, args...), v.logger.fields)
+}
+
+func (log *logger) V(severity Severity) VLogger {
+	return &vlogger{
+		severity: severity,
+		logger:   log,
+	}
 }
 
 func (log *logger) Info(msg string) {
