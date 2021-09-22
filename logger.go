@@ -36,11 +36,17 @@ var (
 // From returns the logger associated with ctx or the
 // default logger.
 func From(ctx context.Context) Logger {
-	if l, ok := ctx.Value(loggerKey).(Logger); ok {
-		return l
+	var (
+		l  Logger
+		ok bool
+	)
+	if l, ok = ctx.Value(loggerKey).(Logger); !ok {
+		l = DefaultLogger()
 	}
-
-	return DefaultLogger()
+	if fields := ContextFields(ctx); fields != nil {
+		l = l.WithFields(fields)
+	}
+	return l
 }
 
 // With creates a new context from ctx and adds log as the logger.
