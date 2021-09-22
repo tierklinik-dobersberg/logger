@@ -8,15 +8,26 @@ import (
 )
 
 // Severity defines the severity of a log message.
-type Severity string
+type Severity int
 
 const (
 	// Info is used for almost all non-critical log messages.
-	Info = Severity("info")
+	Info = Severity(5)
 	// Error is used to log error conditions that have not been handled
 	// or failed to be handled correctly.
-	Error = Severity("error")
+	Error = Severity(0)
 )
+
+func (severity Severity) String() string {
+	switch severity {
+	case Info:
+		return "info(5)"
+	case Error:
+		return "error(0)"
+	default:
+		return fmt.Sprintf("(%d)", severity)
+	}
+}
 
 type (
 	// Adapter is used to actually write log messages to some final destination.
